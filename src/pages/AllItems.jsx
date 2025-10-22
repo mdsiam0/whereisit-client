@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
+import Spinner from "../components/Spinner";
 
 const AllItems = () => {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState("default");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${import.meta.env.VITE_API_URL}/items`)
       .then((res) => setItems(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -25,16 +29,19 @@ const AllItems = () => {
       item.location.toLowerCase().includes(search.toLowerCase())
   );
 
-
+ 
   const sortedItems = [...filteredItems].sort((a, b) => {
     if (sortOption === "title-asc") return a.title.localeCompare(b.title);
     if (sortOption === "title-desc") return b.title.localeCompare(a.title);
-    if (sortOption === "date-newest")
-      return new Date(b.date) - new Date(a.date);
-    if (sortOption === "date-oldest")
-      return new Date(a.date) - new Date(b.date);
+    if (sortOption === "date-newest") return new Date(b.date) - new Date(a.date);
+    if (sortOption === "date-oldest") return new Date(a.date) - new Date(b.date);
     return 0;
   });
+
+ 
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="max-w-[1500px] mx-auto px-4 mb-40 mt-40">
@@ -42,7 +49,7 @@ const AllItems = () => {
         All Lost & Found Items
       </h2>
 
-     
+      
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-10">
         <input
           type="text"
@@ -65,7 +72,7 @@ const AllItems = () => {
         </select>
       </div>
 
-    
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {sortedItems.length > 0 ? (
           sortedItems.map((item) => (
@@ -74,12 +81,11 @@ const AllItems = () => {
               className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl shadow-md p-5 space-y-3 relative"
             >
               <span
-                className={`absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full
-                    ${
-                      item.postType === "Found"
-                        ? "bg-green-200 text-green-800"
-                        : "bg-red-200 text-red-800"
-                    }`}
+                className={`absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full ${
+                  item.postType === "Found"
+                    ? "bg-green-200 text-green-800"
+                    : "bg-red-200 text-red-800"
+                }`}
               >
                 {item.postType}
               </span>
@@ -87,7 +93,7 @@ const AllItems = () => {
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                className="h-60 w-full object-fit rounded-md"
+                className="h-60 w-full object-cover rounded-md"
               />
               <h3 className="text-xl font-semibold">{item.title}</h3>
               <p>
@@ -104,9 +110,7 @@ const AllItems = () => {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-3">
-            No items found.
-          </p>
+          <p className="text-center text-gray-500 col-span-3">No items found.</p>
         )}
       </div>
     </div>
