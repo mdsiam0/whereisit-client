@@ -11,6 +11,7 @@ import MyItems from "../pages/MyItems";
 import UpdateItem from "../pages/UpdateItem";
 import AllRecovered from "../pages/AllRecovered";
 import NotFound from "../pages/NotFound";
+import Notice from "../pages/Notice";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
         element: <PrivateRoute>
           <AllRecovered></AllRecovered>
           </PrivateRoute>,
+      },
+      {
+        path: "/notice",
+        element: <Notice></Notice>
       }
 
 

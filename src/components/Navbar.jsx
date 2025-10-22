@@ -14,7 +14,7 @@ const Navbar = () => {
     logout().then(() => {});
   };
 
-  // Detect scroll position to toggle transparency
+ 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -27,6 +27,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  
   const navLinks = (
     <>
       <NavLink
@@ -49,6 +50,18 @@ const Navbar = () => {
         }
       >
         Lost & Found
+      </NavLink>
+
+   
+      <NavLink
+        to="/notice"
+        className={({ isActive }) =>
+          `font-semibold text-sm md:text-base block ${
+            isActive ? "text-blue-600" : "text-gray-800"
+          }`
+        }
+      >
+        Notice
       </NavLink>
 
       {user && (
@@ -94,12 +107,12 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/70 backdrop-blur-md shadow-md"
+          ? "bg-white/60 backdrop-blur-md shadow-md"
           : "bg-white shadow-md"
       }`}
     >
       <div className="flex justify-between items-center max-w-[1500px] mx-auto px-4 py-4 md:px-6">
-        {/* Logo */}
+    
         <NavLink
           to="/"
           className="text-xl font-bold text-blue-600 flex items-center gap-2"
@@ -108,11 +121,11 @@ const Navbar = () => {
           <h2 className="text-2xl md:text-3xl">WhereIsIt</h2>
         </NavLink>
 
-        {/* Desktop Navigation */}
+        
         <div className="hidden md:flex items-center gap-2 lg:gap-4 text-base">
           {navLinks}
 
-          {/* Avatar Tooltip */}
+         
           {user && (
             <div
               className="relative"
@@ -132,7 +145,7 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Auth Buttons */}
+         
           {user ? (
             <button
               onClick={handleLogout}
@@ -147,7 +160,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Menu */}
+       
         <div className="md:hidden flex items-center gap-3">
           {user && (
             <div
@@ -177,7 +190,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown */}
+    
       {menuOpen && (
         <div className="absolute right-4 top-16 bg-white/90 backdrop-blur-lg rounded shadow-lg z-50 w-56 p-4 md:hidden flex flex-col space-y-2">
           {navLinks}
