@@ -45,7 +45,7 @@ const AddItems = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto my-20 p-6 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 rounded-xl shadow-lg">
+        <div className="max-w-3xl mx-auto mt-40 mb-20 p-6 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 rounded-xl shadow-lg">
             <h2 className="text-2xl font-bold text-center mb-6">Add Lost or Found Item</h2>
             <form onSubmit={handleAddItem} className="grid grid-cols-1 gap-4">
                 <div>

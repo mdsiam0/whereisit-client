@@ -52,7 +52,7 @@ const AllRecovered = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-[1500px] mx-auto px-4 mb-20 mt-40">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">All Recovered Items</h2>
         <button onClick={toggleLayout} className="btn btn-outline btn-sm">
@@ -97,7 +97,7 @@ const AllRecovered = () => {
         </div>
       ) : (
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {recoveredItems.map((item) => (
             <div
               key={item._id}

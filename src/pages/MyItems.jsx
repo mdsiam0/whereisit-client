@@ -67,7 +67,7 @@ const MyItems = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8 my-40">
             <h2 className="text-2xl font-bold mb-6">My Items</h2>
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">

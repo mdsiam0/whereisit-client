@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import logo from "../assets/logo.png";
@@ -8,12 +8,24 @@ const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleLogout = () => {
-    logout().then(() => {
-      
-    });
+    logout().then(() => {});
   };
+
+  // Detect scroll position to toggle transparency
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = (
     <>
@@ -79,9 +91,15 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="shadow px-4 py-4 md:px-6 bg-[#f5f3fc]">
-      <div className="flex justify-between items-center max-w-[1500px] mx-auto relative">
-       
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/70 backdrop-blur-md shadow-md"
+          : "bg-white shadow-md"
+      }`}
+    >
+      <div className="flex justify-between items-center max-w-[1500px] mx-auto px-4 py-4 md:px-6">
+        {/* Logo */}
         <NavLink
           to="/"
           className="text-xl font-bold text-blue-600 flex items-center gap-2"
@@ -90,10 +108,11 @@ const Navbar = () => {
           <h2 className="text-2xl md:text-3xl">WhereIsIt</h2>
         </NavLink>
 
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-2 lg:gap-4 text-base">
           {navLinks}
 
-       
+          {/* Avatar Tooltip */}
           {user && (
             <div
               className="relative"
@@ -113,7 +132,7 @@ const Navbar = () => {
             </div>
           )}
 
-         
+          {/* Auth Buttons */}
           {user ? (
             <button
               onClick={handleLogout}
@@ -128,6 +147,7 @@ const Navbar = () => {
           )}
         </div>
 
+        {/* Mobile Menu */}
         <div className="md:hidden flex items-center gap-3">
           {user && (
             <div
@@ -155,34 +175,34 @@ const Navbar = () => {
             {menuOpen ? <FiX /> : <FiMenu />}
           </button>
         </div>
-
-        
-        {menuOpen && (
-          <div className="absolute right-4 top-16 bg-white rounded shadow-lg z-50 w-56 p-4 md:hidden flex flex-col space-y-2">
-            {navLinks}
-            <div className="border-t border-gray-200 my-2"></div>
-            {user ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
-                }}
-                className="block w-full text-left  py-2 hover:bg-red-100 text-red-600 font-medium"
-              >
-                Logout
-              </button>
-            ) : (
-              <NavLink
-                to="/login"
-                className="block  py-2 hover:bg-gray-100 font-medium"
-                onClick={() => setMenuOpen(false)}
-              >
-                Login
-              </NavLink>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Mobile Dropdown */}
+      {menuOpen && (
+        <div className="absolute right-4 top-16 bg-white/90 backdrop-blur-lg rounded shadow-lg z-50 w-56 p-4 md:hidden flex flex-col space-y-2">
+          {navLinks}
+          <div className="border-t border-gray-200 my-2"></div>
+          {user ? (
+            <button
+              onClick={() => {
+                handleLogout();
+                setMenuOpen(false);
+              }}
+              className="block w-full text-left py-2 hover:bg-red-100 text-red-600 font-medium"
+            >
+              Logout
+            </button>
+          ) : (
+            <NavLink
+              to="/login"
+              className="block py-2 hover:bg-gray-100 font-medium"
+              onClick={() => setMenuOpen(false)}
+            >
+              Login
+            </NavLink>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

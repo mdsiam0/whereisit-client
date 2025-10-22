@@ -29,7 +29,7 @@ const slides = [
 
 const Banner = () => {
   return (
-    <div className="w-full flex justify-center mt-20 px-4  md:px-6">
+    <div className="w-full flex justify-center mt-40 px-4  md:px-6">
       <div className="w-full max-w-[1500px]">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
